@@ -1,23 +1,38 @@
 import React from 'react'; // подключение библиотеки React
 import { Add } from './components/Add' // ./ = текущая директория,
 import { News } from './components/News' // далее мы идем в директорию components и в нужный компонент
-import newsData from './data/newsData'
+
 import './App.css'; // подключение файла стилей
 
 class App extends React.Component {
     state = {
-        news: newsData,
+        news: null,
+        isLoading: true,
     };
+    componentDidMount() {
+        fetch('http://localhost:3000/data/newsData.json')
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                setTimeout(() => {
+                        this.setState({ news: data, isLoading: false });
+                    }, 3000)
+            })
+    }
     handleAddNews = data => {
-        const nextNews = [data, ...this.state.news]
+        const nextNews = [data, ...this.state.news];
         this.setState({ news: nextNews })
     };
     render() {
+        const { news, isLoading } = this.state;
+
         return (
             <React.Fragment>
                 <Add onAddNews={this.handleAddNews} />
                 <h3>Новости</h3>
-                <News data={this.state.news} />
+                {isLoading && <p>Загружаю...</p>}
+                {Array.isArray(news) && <News data={news} />}
             </React.Fragment>
         )
     }

@@ -6,12 +6,12 @@ class Article extends React.Component {
         visible: false,
     };
     handleReadMoreClck = e => {
-        e.preventDefault()
+        e.preventDefault();
         this.setState({ visible: true })
     };
     render() {
-        const { author, text, bigText } = this.props.data
-        const { visible } = this.state
+        const { author, text, bigText } = this.props.data;
+        const { visible } = this.state;
         return (
             <div className="article">
                 <p className="news__author">{author}:</p>
@@ -25,7 +25,7 @@ class Article extends React.Component {
                         Подробнее
                     </a>
                 )}
-                {visible && <p className="news__big-text">{bigText}</p>}
+                {visible && <p className="news__big-text">{bigText.match(/\bpubg\b/) ? 'СПАН' : bigText}</p>}
             </div>
         )
     }
