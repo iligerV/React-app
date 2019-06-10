@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { Article } from './Article' // идти в components не нужно, так как мы уже в этой директории
 
 class News extends React.Component {
+
     renderNews = () => {
         const { data } = this.props;
         let newsTemplate = null;
+
         if (data.length) {
             newsTemplate = data.map(function(item) {
                 return <Article key={item.id} data={item} />;

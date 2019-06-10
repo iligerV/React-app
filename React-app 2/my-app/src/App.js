@@ -9,6 +9,25 @@ class App extends React.Component {
         news: null,
         isLoading: true,
     };
+    static getDerivedStateFromProps(props, state) {
+        let nextFilteredNews;
+        // смотрим в state.news (ранее смотрели в props)
+        // и проверяем, чтобы не клоинировать null
+        // например, в момент первой отрисовки
+        if (Array.isArray(state.news)) {
+            nextFilteredNews = [...state.news];
+            nextFilteredNews.forEach((item) => {
+                if (item.bigText.toLowerCase().indexOf('pubg') !== -1) {
+                    item.bigText = 'СПАМ'
+                }
+            });
+            return {
+                filteredNews: nextFilteredNews,
+            }
+        }
+        return null
+    }
+
     componentDidMount() {
         fetch('http://localhost:3000/data/newsData.json')
             .then(response => {
@@ -16,10 +35,12 @@ class App extends React.Component {
             })
             .then(data => {
                 setTimeout(() => {
-                        this.setState({ news: data, isLoading: false });
-                    }, 3000)
+                        this.setState({ news: data, isLoading: false } );
+                    }, 1000);
+
             })
     }
+
     handleAddNews = data => {
         const nextNews = [data, ...this.state.news];
         this.setState({ news: nextNews })

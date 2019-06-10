@@ -25,7 +25,7 @@ class Article extends React.Component {
                         Подробнее
                     </a>
                 )}
-                {visible && <p className="news__big-text">{bigText.match(/\bpubg\b/) ? 'СПАН' : bigText}</p>}
+                {visible && <p className="news__big-text">{bigText}</p>}
             </div>
         )
     }
