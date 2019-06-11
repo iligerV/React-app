@@ -30,7 +30,7 @@ class Add extends React.Component {
         if (name.trim() && text.trim() && agree) {
             return true;
         }
-        return false;
+            return false;
     };
     render() {
         const { name, text, bigText } = this.state;

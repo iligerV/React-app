@@ -18,7 +18,12 @@ p {
   box-shadow: 2px 2px 5px -1px rgb(0, 81, 202);
   padding: 3px 5px;
 }
-.article_btn_rewrite {
+.article_top_div {
+  width: 80%;
+}
+.article_btm_div {
+  display: flex;
+  flex-direction: column;
   margin: auto 10px;
 }
 .news__author {
@@ -59,3 +64,30 @@ p {
   background: #CCC;
   color: #999;
 }
+.modal_to_dlt {
+  z-index: 5;
+  position: fixed;
+  width: 400px;
+  height: 105px;
+  margin: -25px 500px;
+  background-color: grey;
+  border: 1px solid firebrick;
+}
+.modal_to_dlt div {
+  display: flex;
+  justify-content: space-around;
+}
+.modal_to_dlt div button {
+  width: 70px;
+  height: 35px;
+}
+.bg {
+  z-index: 3;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+

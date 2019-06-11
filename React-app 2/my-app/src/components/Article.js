@@ -1,71 +1,95 @@
 import React from 'react' // мы обязаны импортировать необходимые пакеты в каждом файле
 import PropTypes from 'prop-types' // у Article это react и prop-types
+import ModalToDlt from './ModalToDlt'
 // далее просто скопировано все что было, кроме последней строки
 class Article extends React.Component {
     state = {
         visible: false,
         articleStory: this.props.data.text,
         btnVisibleInput: false,
+        btnVisibleModalToDelete: false,
     };
-    handleReadMoreClck = e => {
-        e.preventDefault();
-        this.setState({ visible: true })
+
+    handleReadMoreClick = () => {
+        this.setState({visible: true})
     };
+
     handleArticleStorySaveChanges = e => {
         this.setState({articleStory: e.currentTarget.value})
     };
-    handleBtnMakeVisibleInput = e => {
-        e.preventDefault();
-            this.setState({ btnVisibleInput: true });
+
+    handleBtnMakeVisibleInput = () => {
+        const {btnVisibleInput} = this.state;
+
+        this.setState({btnVisibleInput: !btnVisibleInput});
     };
-    handleBtnMakeVisiblePText = e => {
-        e.preventDefault();
-            this.setState({ btnVisibleInput: false });
+
+    handleBtnMakeVisibleModalToDelete = () => {
+        const {btnVisibleModalToDelete} = this.state;
+
+        this.setState({btnVisibleModalToDelete: !btnVisibleModalToDelete});
     };
+
+    renderModalToDelete = () => {
+        return <ModalToDlt />
+    };
+
     render() {
-        const { author, text, bigText } = this.props.data;
-        const { visible, btnVisibleInput, articleStory } = this.state;
+        const {author, bigText} = this.props.data;
+        const {visible, btnVisibleInput, articleStory, btnVisibleModalToDelete} = this.state;
         return (
-            <div className="article">
-                <div>
-                    <p className="news__author">{author}:</p>
-                    {!btnVisibleInput
-                        ?
-                        <p className="news__text">{articleStory}</p>
-                        :
-                        <input
-                            onChange={this.handleArticleStorySaveChanges}
-                            type="text"
-                            value={articleStory}
-                        />
-                    }
-                    {!visible && (
-                        <a
-                            onClick={this.handleReadMoreClck}
-                            href="#readmore"
-                            className="news__readmore"
-                        >
-                            Подробнее
-                        </a>
-                    )}
-                    {visible && <p className="news__big-text">{bigText}</p>}
-                </div>
-                <div className="article_btn_rewrite">
-                    {!btnVisibleInput &&
-                    < button
-                        onClick={this.handleBtnMakeVisibleInput}
-                        >Изменить</button>
-                    }
-                    {btnVisibleInput &&
+            <React.Fragment>
+                {btnVisibleModalToDelete
+                    ? this.renderModalToDelete()
+                    : null
+                }
+                <div className="article">
+                    <div className='article_top_div'>
+                        <p className="news__author">{author}:</p>
+                        {!btnVisibleInput
+                            ? <p className="news__text">{articleStory}</p>
+                            : <input
+                                onChange={this.handleArticleStorySaveChanges}
+                                type="text"
+                                value={articleStory}
+                            />
+                        }
+                        {!visible
+                            ? <a
+                                onClick={this.handleReadMoreClick}
+                                href="#readmore"
+                                className="news__readmore"
+                            >
+                                Подробнее
+                            </a>
+                            : <p className="news__big-text">{bigText}</p>
+                        }
+                    </div>
+                    <div className="article_btm_div">
                         <button
-                            onClick={this.handleBtnMakeVisiblePText}
-                        >Сохранить</button>
-                    }
+                            className='delete_news'
+                            onClick={this.handleBtnMakeVisibleModalToDelete}
+                        >Удалить</button>
+
+                        {!btnVisibleInput
+                            ? < button
+                                onClick={this.handleBtnMakeVisibleInput}
+                            >
+                                Изменить
+                            </button>
+                            : <button
+                                onClick={this.handleBtnMakeVisibleInput}
+                            >
+                                Сохранить
+                            </button>
+                        }
+                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }
+
 Article.propTypes = {
     data: PropTypes.shape({
         id: PropTypes.number.isRequired, // добавили id, это число, обязательно
@@ -74,4 +98,5 @@ Article.propTypes = {
         bigText: PropTypes.string.isRequired,
     }),
 };
-export { Article } // именованный экспорт
+
+export {Article} // именованный экспорт
